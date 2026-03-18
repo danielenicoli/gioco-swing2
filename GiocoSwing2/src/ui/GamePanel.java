@@ -61,6 +61,19 @@ public class GamePanel extends JPanel implements KeyListener {
         g.drawString("Punti: " + punteggio, 10, 20);
     }
 
+    private void controllaCollisioni() {
+        for(Pallino pallino : pallini) {
+            if(pallino.isVisibile() && giocatore.getLimiti().intersects(pallino.getLimiti())) {
+                pallino.setVisibile(false);
+                punteggio++;
+            }
+        }
+        repaint();
+        if(punteggio == NUMERO_PALLINI) {
+            JOptionPane.showMessageDialog(null, "Hai preso tutti i pallini!");
+        }
+    }
+
     @Override
     public void keyPressed(KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_LEFT) {
@@ -75,8 +88,7 @@ public class GamePanel extends JPanel implements KeyListener {
         if(e.getKeyCode() == KeyEvent.VK_DOWN) {
             giocatore.setY(10, getWidth());
         }
-
-        repaint();
+        controllaCollisioni();
     }
 
     @Override
